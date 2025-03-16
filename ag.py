@@ -1,31 +1,31 @@
 import os
-from openai import OpenAI
 import argparse
+from volcenginesdkarkruntime import Ark  # 修改导入方式
 
-# 初始化 OpenAI 客户端
-client = OpenAI(
-    api_key=os.environ.get("ARK_API_KEY"),  # 从环境变量中读取 API Key
-    base_url="https://ark.cn-beijing.volces.com/api/v3",  # 替换为实际的 API 地址
+# 初始化方舟客户端
+client = Ark(
+    api_key=os.environ.get("ARK_API_KEY")  # 从环境变量读取API Key
 )
 
 def chat_with_ai(prompt):
     """
-    向 AI 服务发送请求并获取响应
+    向AI服务发送请求并获取响应
     """
     try:
         completion = client.chat.completions.create(
-            model="deepseek-v3-241226",  # 替换为实际的模型 ID
+            model="deepseek-v3-241226",  # 
             messages=[
                 {"role": "user", "content": prompt}
             ]
         )
+        # 提取响应内容（假设响应结构与OpenAI兼容）
         return completion.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"
 
 def interactive_chat():
     """
-    实现终端交互式对话
+    终端交互式对话功能
     """
     print("Welcome to the AI Terminal Chat! Type 'exit' to quit.")
     while True:
@@ -42,7 +42,7 @@ def interactive_chat():
 
 def main():
     """
-    主函数，解析命令行参数并启动对话
+    主函数
     """
     parser = argparse.ArgumentParser(description="Terminal AI Agent")
     parser.add_argument("ag", nargs="?", help="Start the AI chat agent")
